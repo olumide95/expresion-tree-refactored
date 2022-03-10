@@ -55,7 +55,7 @@ class Node
   def result
     return value unless operator.is_a?(Operator)
     operator.result(left.result, right.result)
-    rescue NoMethodError, TypeError
+    rescue NoMethodError, TypeError, ZeroDivisionError
      nil
   end
 
@@ -95,14 +95,15 @@ end
 assert_equal "((7 + ((3 - 2) x 5)) ÷ 6)", tree.to_s
 assert_equal 2, tree.result
 
-node_with_nil_value = Node.new("", nil, nil, nil)
+# Test it returns nil when a left operand is nil
+node_with_nil_left = Node.new("", nil, nil, nil)
 tree = Node.new(
   DivisionOperator.new,
   nil,
   Node.new(
     AdditionOperator.new,
     nil,
-    node_with_nil_value,
+    node_with_nil_left,
     Node.new(
       MultiplicationOperator.new,
       nil,
@@ -119,8 +120,8 @@ tree = Node.new(
 assert_equal "(( + ((3 - 2) x 5)) ÷ 6)", tree.to_s
 assert_equal nil, tree.result
 
-node_with_nil_left = Node.new("", nil, nil, nil)
-
+# Test it returns nil when a right operand is nil
+node_with_nil_right = Node.new("", nil, nil, nil)
 tree = Node.new(
   DivisionOperator.new,
   nil,
@@ -132,8 +133,8 @@ tree = Node.new(
       MultiplicationOperator.new,
       nil,
       Node.new(SubtractionOperator.new, nil,
-        node_with_nil_left,
-        Node.new("", 2, nil, nil)
+        Node.new("", 2, nil, nil),
+        node_with_nil_right,
       ),
       Node.new("", 5, nil, nil)
     )
@@ -141,9 +142,19 @@ tree = Node.new(
   Node.new("", 6, nil, nil)
 );
 
-assert_equal "((7 + (( - 2) x 5)) ÷ 6)", tree.to_s
+assert_equal "((7 + ((2 - ) x 5)) ÷ 6)", tree.to_s
 assert_equal nil, tree.result
 
+# Test Division by zero returns nil
+tree = Node.new(DivisionOperator.new, nil,
+        Node.new("", 2, nil, nil),
+        Node.new("", 0, nil, nil)
+      )
+
+assert_equal "(2 ÷ 0)", tree.to_s
+assert_equal nil, tree.result
+
+# Test to_s for all Operators returns expected string
 assert_equal "(a + b)", AdditionOperator.new.to_s('a', 'b')
 assert_equal "(a - b)", SubtractionOperator.new.to_s('a', 'b')
 assert_equal "(a x b)", MultiplicationOperator.new.to_s('a', 'b')
