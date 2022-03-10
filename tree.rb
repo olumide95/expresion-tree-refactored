@@ -49,7 +49,9 @@ class Node
     @left = left
     @right = right
   end
-
+  
+  attr_reader :operator, :value, :left, :right
+  
   def result
     return value if !operator.kind_of?(Operator)
     operator.result(left.result, right.result)
