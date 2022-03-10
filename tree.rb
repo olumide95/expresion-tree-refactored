@@ -93,10 +93,6 @@ end
 assert_equal "((7 + ((3 - 2) x 5)) ÷ 6)", tree.to_s
 assert_equal 2, tree.result
 
-tree = Node.new("", 7, nil, nil)
-assert_equal "7", tree.to_s
-assert_equal 7, tree.result
-
 assert_equal "(a + b)", AdditionOperator.new.to_s('a', 'b')
 assert_equal "(a - b)", SubtractionOperator.new.to_s('a', 'b')
 assert_equal "(a x b)", MultiplicationOperator.new.to_s('a', 'b')
