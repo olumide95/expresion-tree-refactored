@@ -55,6 +55,8 @@ class Node
   def result
     return value unless operator.is_a?(Operator)
     operator.result(left.result, right.result)
+    rescue NoMethodError, TypeError
+     nil
   end
 
   def to_s
@@ -92,6 +94,55 @@ end
 
 assert_equal "((7 + ((3 - 2) x 5)) ÷ 6)", tree.to_s
 assert_equal 2, tree.result
+
+node_with_nil_value = Node.new("", nil, nil, nil)
+tree = Node.new(
+  DivisionOperator.new,
+  nil,
+  Node.new(
+    AdditionOperator.new,
+    nil,
+    node_with_nil_value,
+    Node.new(
+      MultiplicationOperator.new,
+      nil,
+      Node.new(SubtractionOperator.new, nil,
+        Node.new("", 3, nil, nil),
+        Node.new("", 2, nil, nil)
+      ),
+      Node.new("", 5, nil, nil)
+    )
+  ),
+  Node.new("", 6, nil, nil)
+);
+
+assert_equal "(( + ((3 - 2) x 5)) ÷ 6)", tree.to_s
+assert_equal nil, tree.result
+
+node_with_nil_left = Node.new("", nil, nil, nil)
+
+tree = Node.new(
+  DivisionOperator.new,
+  nil,
+  Node.new(
+    AdditionOperator.new,
+    nil,
+    Node.new("", 7, nil, nil),
+    Node.new(
+      MultiplicationOperator.new,
+      nil,
+      Node.new(SubtractionOperator.new, nil,
+        node_with_nil_left,
+        Node.new("", 2, nil, nil)
+      ),
+      Node.new("", 5, nil, nil)
+    )
+  ),
+  Node.new("", 6, nil, nil)
+);
+
+assert_equal "((7 + (( - 2) x 5)) ÷ 6)", tree.to_s
+assert_equal nil, tree.result
 
 assert_equal "(a + b)", AdditionOperator.new.to_s('a', 'b')
 assert_equal "(a - b)", SubtractionOperator.new.to_s('a', 'b')
