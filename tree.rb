@@ -2,15 +2,35 @@ class Operator
 end  
 
 class AdditionOperator < Operator
+  def result(left, right)
+  end
+
+  def to_s(left, right)
+  end
 end
 
 class SubtractionOperator < Operator
+  def result(left, right)
+  end
+
+  def to_s(left, right)
+  end
 end
 
 class MultiplicationOperator < Operator
+  def result(left, right)
+  end
+
+  def to_s(left, right)
+  end
 end
 
 class DivisionOperator < Operator
+  def result(left, right)
+  end
+
+  def to_s(left, right)
+  end
 end
 
 
@@ -23,9 +43,13 @@ class Node
   end
 
   def result
+    return value if !operator.kind_of?(Operator)
+    operator.result(left.result, right.result)
   end
 
   def to_s
+    return value.to_s if !operator.kind_of?(Operator)
+    operator.to_s(left.to_s, right.to_s)
   end
 end
 
