@@ -1,3 +1,19 @@
+class Operator
+end  
+
+class AdditionOperator < Operator
+end
+
+class SubtractionOperator < Operator
+end
+
+class MultiplicationOperator < Operator
+end
+
+class DivisionOperator < Operator
+end
+
+
 class Node
   def initialize(operator, value, left, right)
     @operator = operator
