@@ -96,14 +96,13 @@ assert_equal "((7 + ((3 - 2) x 5)) ÷ 6)", tree.to_s
 assert_equal 2, tree.result
 
 # Test it returns nil when a left operand is nil
-node_with_nil_left = Node.new("", nil, nil, nil)
 tree = Node.new(
   DivisionOperator.new,
   nil,
   Node.new(
     AdditionOperator.new,
     nil,
-    node_with_nil_left,
+    nil,
     Node.new(
       MultiplicationOperator.new,
       nil,
@@ -121,7 +120,6 @@ assert_equal "(( + ((3 - 2) x 5)) ÷ 6)", tree.to_s
 assert_equal nil, tree.result
 
 # Test it returns nil when a right operand is nil
-node_with_nil_right = Node.new("", nil, nil, nil)
 tree = Node.new(
   DivisionOperator.new,
   nil,
@@ -134,7 +132,7 @@ tree = Node.new(
       nil,
       Node.new(SubtractionOperator.new, nil,
         Node.new("", 2, nil, nil),
-        node_with_nil_right,
+        nil,
       ),
       Node.new("", 5, nil, nil)
     )
