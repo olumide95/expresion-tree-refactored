@@ -3,33 +3,41 @@ end
 
 class AdditionOperator < Operator
   def result(left, right)
+    left + right
   end
 
   def to_s(left, right)
+    "(#{left} + #{right})"
   end
 end
 
 class SubtractionOperator < Operator
   def result(left, right)
+    left - right
   end
 
   def to_s(left, right)
+    "(#{left} - #{right})"
   end
 end
 
 class MultiplicationOperator < Operator
   def result(left, right)
+    left * right
   end
 
   def to_s(left, right)
+    "(#{left} x #{right})"
   end
 end
 
 class DivisionOperator < Operator
   def result(left, right)
+    left / right
   end
 
   def to_s(left, right)
+    "(#{left} ÷ #{right})"
   end
 end
 
