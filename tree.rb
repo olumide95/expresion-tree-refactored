@@ -62,16 +62,16 @@ class Node
 end
 
 tree = Node.new(
-  "÷",
+  DivisionOperator.new,
   nil,
   Node.new(
-    "+",
+    AdditionOperator.new,
     nil,
     Node.new("", 7, nil, nil),
     Node.new(
-      "x",
+      MultiplicationOperator.new,
       nil,
-      Node.new("-", nil,
+      Node.new(SubtractionOperator.new, nil,
         Node.new("", 3, nil, nil),
         Node.new("", 2, nil, nil)
       ),
